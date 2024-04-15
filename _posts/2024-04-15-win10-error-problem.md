@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Win10远程桌面出现身份验证错误"
-date: 2024-04-15 12:00:00 -0000
+date: 2024-04-15 12:00:00
 categories: windows10
 ---
 Win10远程桌面连接Window Server时报错信息如下：
