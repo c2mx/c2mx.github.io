@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "开始在github创建博客"
-date: 2024-01-24 17:00:00 -0000
+title: 开始在github创建博客
+date: 2024-01-24 17:00:00
 categories: blog
 ---
 

@@ -1,31 +1,42 @@
-<header class="site-header">
+{% assign homeActive = 'active' %}
+{% if page.hideHomeActive %}
+{% assign homeActive = nil %}
+{% endif %}
+<div class="header-menu" id="J_header">
+  <ul class="header-item-container">
+    <li class="header-item-title {{homeActive}}">
+      <a href="{{site.url}}/" class="title"> {{ site.title }}</a>
+    </li>
+    <li class="header-item language-switch"><a href="{{ site.url }}/"><span>🇨🇳</span> CN</span></a></li>
 
-  <div class="wrapper">
-    {%- assign default_paths = site.pages | map: "path" -%}
-    {%- assign page_paths = site.header_pages | default: default_paths -%}
-    {%- assign titles_size = site.pages | map: 'title' | join: '' | size -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
 
-    {%- if titles_size > 0 -%}
-      <nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+    {% for menu in site.menu reversed %}
+    {% assign class = nil %}
+    {% if (page.url contains menu.url and menu.url != '/') %}
+    {% assign class = 'active' %}
+    {% endif %}
 
-        <div class="trigger">
-          {%- for path in page_paths -%}
-            {%- assign my_page = site.pages | where: "path", path | first -%}
-            {%- if my_page.title -%}
-            <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </nav>
-    {%- endif -%}
-  </div>
-</header>
+    {% if menu.url contains 'http://' or menu.url contains 'https://' %}
+    <li class="header-item {{class}}"><a href="{{menu.url}}" target="_blank">{{ menu.title }}</a></li>
+    {% else %}
+    <li class="header-item {{class}}"><a href="{{site.url}}{{menu.url}}">{{ menu.title }}</a></li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% assign fontSize = 36 %}
+{% if page.url contains '/en/' %}
+{% assign fontSize = 34 %}
+{% endif %}
+<div class="entry-header">
+  <svg width="100%" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+    <path id="svg-title-path">
+      <animate attributeName="d" from="m0,110 h0" to="m0,110 h1600" dur="2s" repeatCount="1" fill="freeze" begin="0s" />
+    </path>
+    <text font-size="{{fontSize}}" font-weight="600" fill="#ffffff" x="50%" y="50%" text-anchor="middle" word-spacing="2.0" letter-spacing="1.2">
+      <textPath xlink:href="#svg-title-path">{{ page.title }}</textPath>
+    </text>
+  </svg>
+  <canvas id="J_firework_canvas"></canvas>
+</div>

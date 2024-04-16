@@ -1,37 +1,90 @@
-<footer class="site-footer h-card">
-  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+<div class="footer-wrapper">
+  <footer role="contentinfo">
 
-  <div class="wrapper">
+    <a href="https://github.com/{{site.github}}" rel="nofollow" target="_blank">
+      <img src="https://gw.alipayobjects.com/zos/k/gp/02.png" class="social-icon github-icon" alt="github" />
+    </a>
 
-    <div class="footer-col-wrapper">
-      <div class="footer-col">
-        <p class="feed-subscribe">
-          <a href="{{ site.feed.path | default: 'feed.xml' | absolute_url }}">
-            <svg class="svg-icon orange">
-              <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
-            </svg><span>Subscribe</span>
-          </a>
-        </p>
-      {%- if site.author %}
-        <ul class="contact-list">
-          {% if site.author.name -%}
-            <li class="p-name">{{ site.author.name | escape }}</li>
-          {% endif -%}
-          {% if site.author.email -%}
-            <li><a class="u-email" href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>
-          {%- endif %}
-        </ul>
-      {%- endif %}
-      </div>
-      <div class="footer-col">
-        <p>{{ site.description | escape }}</p>
-      </div>
-    </div>
+    <a href="{{ site.url }}/feed.xml" rel="nofollow" target="_blank">
+      <img src="https://gw.alipayobjects.com/zos/k/38/01.png" class="social-icon" alt="RSS" />
+    </a>
 
-    <div class="social-links">
-      {%- include social.html -%}
-    </div>
+    <a href="https://github.com/{{site.repo}}" rel="nofollow" target="_blank">
+      <img src="https://gw.alipayobjects.com/zos/k/j4/06.png" class="social-icon time-icon" alt="github" />
+      <span class="repo-time">2023~{{ site.time | date: '%Y' }}</span>
+    </a>
+  </footer>
+</div>
 
-  </div>
+<script type="text/javascript" src="{{ site.url }}/js/index.min.js"></script>
+<script type="text/javascript" src="https://gw.alipayobjects.com/os/k/h3/heti-addon.min.js"></script>
 
-</footer>
+{% if site.google_analytics %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag () {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "{{ site.google_analytics }}");
+</script>
+{% endif %} {% if page.url=="/" %}
+
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    //Optimize letter spacing
+    const heti = new Heti(".heti");
+    heti.autoSpacing();
+
+    // Jump out
+    const links = document.links;
+    for (let i = 0; i < links.length; i++) {
+      if (
+        links[i].hostname != window.location.hostname ||
+        (links[i].href && links[i].href.indexOf("feed.xml") != -1)
+      ) {
+        links[i].target = "_blank";
+      }
+    }
+
+    // The second image is the cover image, both of which could do with some optimization
+    const images = document.querySelectorAll('.entry-content img');
+    images.forEach((img, index) => {
+      img.setAttribute('loading', 'lazy');
+      img.setAttribute('decoding', 'async');
+    });
+
+    // Full screen button
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    fullscreenBtn && fullscreenBtn.addEventListener("click", function () {
+      var elem = document.getElementById("postIframe");
+
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+    // Select all the links that need to be preloaded
+    const linksToPrefetch = document.querySelectorAll('.read-more, .header-href, .pagination a, .header-item a');
+    linksToPrefetch.forEach(function (link) {
+      link.addEventListener('mouseover', function () {
+        if (!document.querySelector(`link[rel="prefetch"][href="${link.href}"]`)) {
+          var prefetchLink = document.createElement('link');
+          prefetchLink.rel = 'prefetch';
+          prefetchLink.href = link.href;
+          prefetchLink.as = 'document';
+          document.head.appendChild(prefetchLink);
+        }
+      });
+    });
+  });
+</script>
